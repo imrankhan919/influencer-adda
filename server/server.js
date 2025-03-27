@@ -1,6 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 const connectDB = require("./config/db_config");
+const errorHandler = require("./middleware/erroHandler");
 require("dotenv").config();
 
 const app = express();
@@ -30,6 +31,9 @@ app.use("/api/booking", require("./routes/bookingRoutes"));
 
 // Influencer Routes
 app.use("/api/influencers", require("./routes/influencerRoutes"));
+
+// Error Handler
+app.use(errorHandler);
 
 app.listen(PORT, () =>
   console.log(`SERVER IS RUNNING AT PORT ${PORT}`.bgBlue.black)
