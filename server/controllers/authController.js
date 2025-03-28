@@ -74,7 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const privateController = async (req, res) => {
-  res.send("Private Controller");
+  res.json({
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    isAdmin: req.user.isAdmin,
+  });
 };
 
 // Generate Token
