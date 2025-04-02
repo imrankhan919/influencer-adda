@@ -6,10 +6,11 @@ const {
   removeInfluencer,
   updateBooking,
 } = require("../controllers/adminController");
+const adminProtect = require("../middleware/adminMiddleware");
 
 const router = express.Router();
 
-router.post("/influencer", createInfluencer);
+router.post("/influencer", adminProtect, createInfluencer);
 router.put("/influencer/:id", updateInfluencer);
 router.delete("/influencer/:id", removeInfluencer);
 router.get("/bookings", getAllBookings);
