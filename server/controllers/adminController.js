@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const influencer = require("../models/influencerModel");
+const Influencer = require("../models/influencerModel");
 
 const createInfluencer = asyncHandler(async (req, res) => {
   // Check if all fields are filled
@@ -29,7 +29,7 @@ const createInfluencer = asyncHandler(async (req, res) => {
   }
 
   // Check if influencer exist
-  const influencerExist = await influencer.findOne({ instagram_handle });
+  const influencerExist = await Influencer.findOne({ instagram_handle });
 
   if (influencerExist) {
     res.status(400);
@@ -37,7 +37,7 @@ const createInfluencer = asyncHandler(async (req, res) => {
   }
 
   // Create Influencer
-  const newInfluencer = await influencer.create({
+  const newInfluencer = await Influencer.create({
     name,
     niche,
     followers,
@@ -56,13 +56,29 @@ const createInfluencer = asyncHandler(async (req, res) => {
   res.status(201).json(newInfluencer);
 });
 
-const updateInfluencer = async (req, res) => {
-  res.send("Influencer Updated");
-};
+const updateInfluencer = asyncHandler(async (req, res) => {
+  const updatedInfluencer = await Influencer.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
 
-const removeInfluencer = async (req, res) => {
-  res.send("Influencer Removed");
-};
+  if (!updatedInfluencer) {
+    res.status(400);
+    throw new Error("Influencer Not Updated!");
+  }
+
+  res.status(200).json(updatedInfluencer);
+});
+
+const removeInfluencer = asyncHandler(async (req, res) => {
+  await Influencer.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({
+    id: req.params.id,
+    msg: "Influencer Removed!!",
+  });
+});
 
 const getAllBookings = async (req, res) => {
   res.send("All Users Bookings");

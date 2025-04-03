@@ -9,7 +9,7 @@ const influencerSchema = new mongoose.Schema(
     niche: {
       type: String,
       required: true,
-      enums: [
+      enum: [
         "lifestyle",
         "education",
         "fashion",

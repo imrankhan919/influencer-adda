@@ -4,12 +4,13 @@ const {
   getBooking,
   addBooking,
 } = require("../controllers/bookingContoller");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", getBookings);
-router.post("/", addBooking);
-router.get("/:id", getBooking);
+router.get("/", protect, getBookings);
+router.post("/:id", protect, addBooking);
+router.get("/:bid", protect, getBooking);
 
 router.use("/:id/comment", require("./commentRoutes"));
 
