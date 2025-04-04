@@ -4,11 +4,11 @@ const influencerSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Please Enter Name"],
     },
     niche: {
       type: String,
-      required: true,
+      required: [true, "Please Enter Niche"],
       enum: [
         "lifestyle",
         "education",

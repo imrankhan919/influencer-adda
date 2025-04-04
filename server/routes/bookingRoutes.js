@@ -12,6 +12,6 @@ router.get("/", protect, getBookings);
 router.post("/:id", protect, addBooking);
 router.get("/:bid", protect, getBooking);
 
-router.use("/:id/comment", require("./commentRoutes"));
+router.use("/:bid/comment", require("./commentRoutes"));
 
 module.exports = router;
