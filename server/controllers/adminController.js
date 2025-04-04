@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Influencer = require("../models/influencerModel");
+const Booking = require("../models/bookingModel");
+const User = require("../models/userModel");
 
 const createInfluencer = asyncHandler(async (req, res) => {
   // Check if all fields are filled
@@ -80,13 +82,42 @@ const removeInfluencer = asyncHandler(async (req, res) => {
   });
 });
 
-const getAllBookings = async (req, res) => {
-  res.send("All Users Bookings");
-};
+const getAllBookings = asyncHandler(async (req, res) => {
+  const allBookings = await Booking.find();
 
-const updateBooking = async (req, res) => {
-  res.send("User Booking Updated");
-};
+  if (!allBookings) {
+    res.status(400);
+    throw new Error("No Bookings Found!!");
+  }
+
+  res.status(200).json(allBookings);
+});
+
+const updateBooking = asyncHandler(async (req, res) => {
+  const updatedBooking = await Booking.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  if (!updatedBooking) {
+    res.status(400);
+    throw new Error("Booking Not Updated");
+  }
+
+  res.status(200).json(updatedBooking);
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password");
+
+  if (!users) {
+    res.status(404);
+    throw new Error("Users Not Found!!");
+  }
+
+  res.status(200).json(users);
+});
 
 module.exports = {
   createInfluencer,
@@ -94,4 +125,5 @@ module.exports = {
   removeInfluencer,
   getAllBookings,
   updateBooking,
+  getAllUsers,
 };

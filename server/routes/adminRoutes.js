@@ -5,6 +5,7 @@ const {
   getAllBookings,
   removeInfluencer,
   updateBooking,
+  getAllUsers,
 } = require("../controllers/adminController");
 const adminProtect = require("../middleware/adminMiddleware");
 
@@ -15,5 +16,6 @@ router.put("/influencer/:id", adminProtect, updateInfluencer);
 router.delete("/influencer/:id", adminProtect, removeInfluencer);
 router.get("/bookings", adminProtect, getAllBookings);
 router.put("/bookings/:id", adminProtect, updateBooking);
+router.get("/users", adminProtect, getAllUsers);
 
 module.exports = router;
