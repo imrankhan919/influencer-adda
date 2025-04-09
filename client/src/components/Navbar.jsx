@@ -1,4 +1,4 @@
-import { Sparkles, ArrowRight, LogOut } from "lucide-react";
+import { Sparkles, ArrowRight, LogOut, CircleUser } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logOutUser } from "../features/auth/authSlice";
@@ -34,13 +34,21 @@ const Navbar = () => {
               Login <ArrowRight size={16} className="ml-2" />
             </Link>
           ) : (
-            <button
-              to={"/login"}
-              className="cursor-pointer bg-red-400 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold flex items-center"
-              onClick={handleLogOut}
-            >
-              Logout <LogOut size={16} className="ml-2" />
-            </button>
+            <>
+              <Link
+                to={user.isAdmin ? "/auth/admin" : "/dashboard"}
+                className="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center"
+              >
+                <CircleUser size={16} className="ml-2 mx-2" /> Welcome{" "}
+                {user.name}
+              </Link>
+              <button
+                className="cursor-pointer bg-red-400 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold flex items-center"
+                onClick={handleLogOut}
+              >
+                Logout <LogOut size={16} className="ml-2" />
+              </button>
+            </>
           )}
         </span>
       </div>
