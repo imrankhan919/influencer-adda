@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Phone } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/auth/authSlice";
+import Loader from "../components/Loader";
 
 function Register() {
   const { user, isLoading, isSuccess, isError, message } = useSelector(
@@ -43,7 +44,7 @@ function Register() {
   }, [user, isError, message]);
 
   if (isLoading) {
-    return <h1>Loading....</h1>;
+    return <Loader />;
   }
 
   return (

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";
+import Loader from "../components/Loader";
 
 function Login() {
   const { user, isLoading, isSuccess, isError, message } = useSelector(
@@ -34,7 +35,7 @@ function Login() {
   }, [user, isError, message]);
 
   if (isLoading) {
-    return <h1>Loading....</h1>;
+    return <Loader />;
   }
 
   return (

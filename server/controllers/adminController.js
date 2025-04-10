@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Influencer = require("../models/influencerModel");
 const Booking = require("../models/bookingModel");
 const User = require("../models/userModel");
+const Comment = require("../models/commentModel");
 
 const createInfluencer = asyncHandler(async (req, res) => {
   // Check if all fields are filled
@@ -119,6 +120,17 @@ const getAllUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
+const getAllComments = asyncHandler(async (req, res) => {
+  const comments = await Comment.find();
+
+  if (!comments) {
+    res.status(404);
+    throw new Error("Comments Not Found!!");
+  }
+
+  res.status(200).json(comments);
+});
+
 module.exports = {
   createInfluencer,
   updateInfluencer,
@@ -126,4 +138,5 @@ module.exports = {
   getAllBookings,
   updateBooking,
   getAllUsers,
+  getAllComments,
 };
