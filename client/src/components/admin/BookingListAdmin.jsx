@@ -1,37 +1,29 @@
-import {
-  Users,
-  UserPlus,
-  MessageSquare,
-  Calendar,
-  LayoutDashboard,
-  ChevronDown,
-  Search,
-  Bell,
-  LogOut,
-  X,
-  Edit2,
-} from "lucide-react";
-import { useState } from "react";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsersBookingsForAdmin } from "../../features/admin/adminSlice";
+import Loader from "../Loader";
 
 const BookingListAdmin = () => {
-  const bookings = [
-    {
-      id: 1,
-      influencer: "John Doe",
-      client: "Brand X",
-      date: "2024-03-20",
-      status: "pending",
-    },
-    {
-      id: 2,
-      influencer: "Jane Smith",
-      client: "Brand Y",
-      date: "2024-03-21",
-      status: "completed",
-    },
-  ];
-
   const [selectedBooking, setSelectedBooking] = useState(null);
+
+  const { bookings, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.admin
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllUsersBookingsForAdmin());
+
+    if (isError && message) {
+      toast.error(message, { position: "top-center" });
+    }
+  }, [isError, message]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm">

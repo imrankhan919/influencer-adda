@@ -1,31 +1,30 @@
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
 import { UserPlus, Edit2 } from "lucide-react";
+import Loader from "../Loader";
+import { getAllInfluencersForAdmin } from "../../features/admin/adminSlice";
 
 const InfluencersListAdmin = () => {
-  // Mock data
-  const initialInfluencers = [
-    {
-      id: 1,
-      name: "John Doe",
-      category: "Lifestyle",
-      followers: "100K",
-      status: "active",
-      email: "john@example.com",
-      bio: "Lifestyle blogger and content creator",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      category: "Fashion",
-      followers: "500K",
-      status: "pending",
-      email: "jane@example.com",
-      bio: "Fashion enthusiast and trendsetter",
-    },
-  ];
+  const { influencers, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.admin
+  );
 
-  const [influencers, setInfluencers] = useState(initialInfluencers);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllInfluencersForAdmin());
+
+    if (isError && message) {
+      toast.error(message, { position: "top-center" });
+    }
+  }, [isError, message]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm">
@@ -49,7 +48,7 @@ const InfluencersListAdmin = () => {
                 Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
+                Instagram Handle
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Category
@@ -72,10 +71,10 @@ const InfluencersListAdmin = () => {
                   {influencer.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {influencer.email}
+                  @{influencer.instagram_handle}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {influencer.category}
+                  {influencer.niche}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {influencer.followers}
@@ -83,12 +82,12 @@ const InfluencersListAdmin = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
-                      influencer.status === "active"
+                      influencer.isActive === "active"
                         ? "bg-green-100 text-green-800"
                         : "bg-yellow-100 text-yellow-800"
                     }`}
                   >
-                    {influencer.status}
+                    {influencer.isActive ? "Active" : "Not Available"}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

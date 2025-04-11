@@ -1,31 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCommentsForAdmin } from "../../features/admin/adminSlice";
+import { toast } from "react-toastify";
+import Loader from "../Loader";
 
 const CommentsListAdmin = () => {
+  const { comments, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.admin
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCommentsForAdmin());
+
+    if (isError && message) {
+      toast.error(message, { position: "top-center" });
+    }
+  }, [isError, message]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-xl font-semibold text-gray-800 mb-6">
         Recent Comments
       </h2>
       <div className="space-y-4">
-        {[1, 2, 3].map((comment) => (
-          <div key={comment} className="border-b border-gray-200 pb-4">
+        {comments.map((comment) => (
+          <div key={comment._id} className="border-b border-gray-200 pb-4">
             <div className="flex items-start space-x-3">
-              <img
-                src={`https://images.unsplash.com/photo-${
-                  1500000000000 + comment
-                }?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`}
-                alt="User"
-                className="w-10 h-10 rounded-full"
-              />
               <div>
                 <div className="flex items-center space-x-2">
-                  <h3 className="font-medium text-gray-900">User {comment}</h3>
-                  <span className="text-sm text-gray-500">2 hours ago</span>
+                  <h3 className="font-medium text-gray-900">
+                    User Id : {comment.user}
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    {new Date(comment.createdAt).toLocaleDateString("en-IN")}
+                  </span>
                 </div>
-                <p className="mt-1 text-gray-700">
-                  This is a sample comment. It could be about anything related
-                  to the platform.
-                </p>
+                <p className="mt-1 text-gray-700">{comment.text}</p>
               </div>
             </div>
           </div>

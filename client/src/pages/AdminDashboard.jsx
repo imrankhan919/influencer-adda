@@ -4,6 +4,7 @@ import InfluencersListAdmin from "../components/admin/InfluencersListAdmin";
 import BookingListAdmin from "../components/admin/BookingListAdmin";
 import CommentsListAdmin from "../components/admin/CommentsListAdmin";
 import SidebarAdmin from "../components/admin/SidebarAdmin";
+import UsersListAdmin from "../components/admin/UsersListAdmin";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -20,6 +21,7 @@ const AdminDashboard = () => {
           {activeTab === "dashboard" && <DashboardAdmin />}
           {activeTab === "influencers" && <InfluencersListAdmin />}
           {activeTab === "bookings" && <BookingListAdmin />}
+          {activeTab === "users" && <UsersListAdmin />}
           {activeTab === "comments" && <CommentsListAdmin />}
         </div>
       </main>
