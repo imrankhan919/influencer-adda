@@ -1,12 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createInfluencer,
+  updateTheInfluencer,
+} from "../../features/admin/adminSlice";
 
-const InfluencerModal = () => {
+const InfluencerModal = ({ handleCloseModal }) => {
+  const { edit } = useSelector((state) => state.admin);
+
+  const dispatch = useDispatch();
+
   const [selectedInfluencer, setSelectedInfluencer] = useState(null);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    niche: "",
+    instagram_handle: "",
+    followers: "",
+    location: "",
+    rate: "",
+    profilePic: "",
+    gender: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    !edit.isEdit
+      ? dispatch(createInfluencer(formData))
+      : dispatch(updateTheInfluencer(formData));
+
+    setFormData({
+      name: "",
+      niche: "",
+      instagram_handle: "",
+      followers: "",
+      location: "",
+      rate: "",
+      profilePic: "",
+      gender: "",
+    });
+    handleCloseModal();
+  };
+
+  useEffect(() => {
+    setFormData(edit.influencer);
+  }, [edit]);
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-md">
+    <div className="fixed inset-0 bg-sky-50/50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-md shadow-xl">
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">
             {selectedInfluencer ? "Edit Influencer" : "Add New Influencer"}
@@ -33,41 +84,41 @@ const InfluencerModal = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 required
               />
             </div>
             <div>
               <label
-                htmlFor="email"
+                htmlFor="text"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="category"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Category
+                Niche
               </label>
               <input
                 type="text"
-                id="category"
-                name="category"
-                value={formData.category}
+                id="niche"
+                name="niche"
+                value={formData.niche}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="instagram_handle"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Instagram Handle
+              </label>
+              <input
+                type="text"
+                id="instagram_handle"
+                name="instagram_handle"
+                value={formData.instagram_handle}
+                onChange={handleInputChange}
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 required
               />
             </div>
@@ -84,26 +135,79 @@ const InfluencerModal = () => {
                 name="followers"
                 value={formData.followers}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 required
               />
             </div>
             <div>
               <label
-                htmlFor="bio"
+                htmlFor="location"
                 className="block text-sm font-medium text-gray-700"
               >
-                Bio
+                Location
               </label>
-              <textarea
-                id="bio"
-                name="bio"
-                value={formData.bio}
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
                 onChange={handleInputChange}
-                rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
               />
             </div>
+            <div>
+              <label
+                htmlFor="rate"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Rate
+              </label>
+              <input
+                type="rate"
+                id="rate"
+                name="rate"
+                value={formData.rate}
+                onChange={handleInputChange}
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="profilePic"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Profile Pic URL
+              </label>
+              <input
+                type="profilePic"
+                id="profilePic"
+                name="profilePic"
+                value={formData.profilePic}
+                onChange={handleInputChange}
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="gender"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Gender
+              </label>
+              <input
+                type="gender"
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
+              />
+            </div>
+
             {selectedInfluencer && (
               <div>
                 <label
@@ -117,7 +221,7 @@ const InfluencerModal = () => {
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 >
                   <option value="pending">Pending</option>
                   <option value="active">Active</option>
@@ -137,7 +241,7 @@ const InfluencerModal = () => {
               type="submit"
               className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
             >
-              {selectedInfluencer ? "Update" : "Add"} Influencer
+              {edit.isEdit ? "Update" : "Add"} Influencer
             </button>
           </div>
         </form>

@@ -1,18 +1,40 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { UserPlus, Edit2 } from "lucide-react";
+import { UserPlus, Edit2, Trash2 } from "lucide-react";
 import Loader from "../Loader";
-import { getAllInfluencersForAdmin } from "../../features/admin/adminSlice";
+import {
+  edit,
+  getAllInfluencersForAdmin,
+  removeInfluencer,
+} from "../../features/admin/adminSlice";
+import InfluencerModal from "./InfluencerModal";
 
 const InfluencersListAdmin = () => {
+  const dispatch = useDispatch();
+
   const { influencers, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.admin
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const dispatch = useDispatch();
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEdit = (influencer) => {
+    dispatch(edit(influencer));
+    setIsModalOpen(true);
+  };
+
+  const handleRemove = (id) => {
+    dispatch(removeInfluencer(id));
+  };
 
   useEffect(() => {
     dispatch(getAllInfluencersForAdmin());
@@ -40,6 +62,7 @@ const InfluencersListAdmin = () => {
           </button>
         </div>
       </div>
+      {isModalOpen && <InfluencerModal handleCloseModal={handleCloseModal} />}
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50">
@@ -66,7 +89,7 @@ const InfluencersListAdmin = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {influencers.map((influencer) => (
-              <tr key={influencer.id}>
+              <tr key={influencer._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {influencer.name}
                 </td>
@@ -92,10 +115,18 @@ const InfluencersListAdmin = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => handleOpenModal(influencer)}
+                    onClick={() => handleEdit(influencer)}
                     className="text-purple-600 hover:text-purple-900"
                   >
                     <Edit2 className="w-5 h-5" />
+                  </button>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button
+                    onClick={() => handleRemove(influencer._id)}
+                    className="text-purple-600 hover:text-purple-900"
+                  >
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 </td>
               </tr>

@@ -21,6 +21,7 @@ const influencerSchema = new mongoose.Schema(
         "devotional",
         "comic",
         "food",
+        "motivational",
         "other",
       ],
     },

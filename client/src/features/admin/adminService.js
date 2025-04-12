@@ -37,11 +37,52 @@ const fetchInfluencersForAdmin = async () => {
   return response.data;
 };
 
+const addInfluencer = async (formData, token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post("/api/admin/influencer", formData, options);
+  return response.data;
+};
+
+const updateInfluencer = async (formData, token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(
+    `/api/admin/influencer/${formData._id}`,
+    formData,
+    options
+  );
+  return response.data;
+};
+
+const deleteInfluencer = async (id, token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(
+    `/api/admin/influencer/${id}`,
+
+    options
+  );
+  return response.data;
+};
+
 const adminService = {
   fetchAllUsersBookingsForAdmin,
   fetchInfluencersForAdmin,
   fetchAllUsersForAdmin,
   fetchAllCommentsForAdmin,
+  addInfluencer,
+  updateInfluencer,
+  deleteInfluencer,
 };
 
 export default adminService;
