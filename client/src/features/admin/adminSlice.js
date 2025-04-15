@@ -143,7 +143,23 @@ const adminSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
-      });
+      }).addCase(updateTheBooking.pending, (state, action) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(updateTheBooking.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.bookings = state.bookings.map(item => item._id === action.payload._id ? action.payload : item)
+        state.isError = false;
+      })
+      .addCase(updateTheBooking.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
   },
 });
 
@@ -249,3 +265,15 @@ export const removeInfluencer = createAsyncThunk(
     }
   }
 );
+
+
+// Update Booking
+export const updateTheBooking = createAsyncThunk("UPDATE/BOOKING", async (updateStatus, thunkAPI) => {
+  let token = thunkAPI.getState().auth.user.token;
+  try {
+    return await adminService.updateBooking(updateStatus, token)
+  } catch (error) {
+    const message = error.response.data.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+})

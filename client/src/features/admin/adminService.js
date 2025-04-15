@@ -75,6 +75,19 @@ const deleteInfluencer = async (id, token) => {
   return response.data;
 };
 
+
+const updateBooking = async (updateStatus, token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(`/api/admin/bookings/${updateStatus.id}`, { status: updateStatus.value }, options)
+  return response.data
+}
+
+
+
 const adminService = {
   fetchAllUsersBookingsForAdmin,
   fetchInfluencersForAdmin,
@@ -83,6 +96,7 @@ const adminService = {
   addInfluencer,
   updateInfluencer,
   deleteInfluencer,
+  updateBooking
 };
 
 export default adminService;

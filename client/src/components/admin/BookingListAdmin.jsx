@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsersBookingsForAdmin } from "../../features/admin/adminSlice";
+import { getAllUsersBookingsForAdmin, updateTheBooking } from "../../features/admin/adminSlice";
 import Loader from "../Loader";
 
 const BookingListAdmin = () => {
@@ -12,6 +12,12 @@ const BookingListAdmin = () => {
   );
 
   const dispatch = useDispatch();
+
+  const updateBookingStatus = (id, value) => {
+    dispatch(updateTheBooking({ id, value }))
+  }
+
+
 
   useEffect(() => {
     dispatch(getAllUsersBookingsForAdmin());
@@ -53,21 +59,20 @@ const BookingListAdmin = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {bookings.map((booking) => (
-              <tr key={booking.id}>
+              <tr key={booking._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {booking.influencer}
+                  {booking.influencer.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {booking.client}
+                  {booking.user.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{booking.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{new Date(booking.createdAt).toLocaleDateString('en-IN')}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      booking.status === "completed"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}
+                    className={`px-2 py-1 rounded-full text-xs ${booking.status === "completed"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                      }`}
                   >
                     {booking.status}
                   </span>
@@ -76,7 +81,7 @@ const BookingListAdmin = () => {
                   <select
                     className="text-sm border rounded-md px-2 py-1"
                     onChange={(e) =>
-                      updateBookingStatus(booking.id, e.target.value)
+                      updateBookingStatus(booking._id, e.target.value)
                     }
                     value={booking.status}
                   >

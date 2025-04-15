@@ -84,7 +84,7 @@ const removeInfluencer = asyncHandler(async (req, res) => {
 });
 
 const getAllBookings = asyncHandler(async (req, res) => {
-  const allBookings = await Booking.find();
+  const allBookings = await Booking.find().populate("user").populate('influencer')
 
   if (!allBookings) {
     res.status(400);
@@ -99,7 +99,7 @@ const updateBooking = asyncHandler(async (req, res) => {
     req.params.id,
     req.body,
     { new: true }
-  );
+  ).populate('user').populate('influencer')
 
   if (!updatedBooking) {
     res.status(400);
@@ -121,7 +121,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const getAllComments = asyncHandler(async (req, res) => {
-  const comments = await Comment.find();
+  const comments = await Comment.find().populate('user').populate('booking')
 
   if (!comments) {
     res.status(404);
