@@ -21,14 +21,16 @@ const addComment = asyncHandler(async (req, res) => {
     user: req.user._id,
     booking: req.params.bid,
     text: req.body.text,
-  });
-
+  })
   if (!comment) {
     res.status(400);
     throw new Error("Comments No Created");
   }
 
-  res.status(201).json(comment);
+  const newComment = await Comment.findById(comment._id).populate("user").populate('booking')
+
+
+  res.status(201).json(newComment);
 });
 
 module.exports = { getComments, addComment };

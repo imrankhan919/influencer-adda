@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createInfluencer,
+  resetEdit,
   updateTheInfluencer,
 } from "../../features/admin/adminSlice";
 
@@ -51,6 +52,15 @@ const InfluencerModal = ({ handleCloseModal }) => {
     handleCloseModal();
   };
 
+  const closeModal = () => {
+
+    dispatch(resetEdit())
+
+    handleCloseModal()
+  }
+
+
+
   useEffect(() => {
     setFormData(edit.influencer);
   }, [edit]);
@@ -63,7 +73,7 @@ const InfluencerModal = ({ handleCloseModal }) => {
             {selectedInfluencer ? "Edit Influencer" : "Add New Influencer"}
           </h2>
           <button
-            onClick={handleCloseModal}
+            onClick={closeModal}
             className="text-gray-500 hover:text-gray-700"
           >
             <X className="w-5 h-5" />
@@ -232,7 +242,7 @@ const InfluencerModal = ({ handleCloseModal }) => {
           <div className="mt-6 flex justify-end space-x-3">
             <button
               type="button"
-              onClick={handleCloseModal}
+              onClick={closeModal}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
               Cancel

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MessageSquare, Send } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCommentsForAdmin } from "../../features/admin/adminSlice";
+import { getAllCommentsForAdmin, replyTheCommentByAdmin } from "../../features/admin/adminSlice";
 import { toast } from "react-toastify";
 import Loader from "../Loader";
 
@@ -14,6 +14,14 @@ const CommentsListAdmin = () => {
   const [replyText, setReplyText] = useState("")
 
   const dispatch = useDispatch();
+
+  const handleReplySubmit = (bid) => {
+    dispatch(replyTheCommentByAdmin({ text: replyText, bid }))
+    setReplyText("")
+    setActiveReplyId("")
+  }
+
+
 
   useEffect(() => {
     dispatch(getAllCommentsForAdmin());
@@ -81,7 +89,7 @@ const CommentsListAdmin = () => {
                       className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
                     />
                     <button
-                      onClick={() => handleReplySubmit(comment.id)}
+                      onClick={() => handleReplySubmit(comment.booking._id)}
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
                     >
                       <Send className="w-4 h-4" />

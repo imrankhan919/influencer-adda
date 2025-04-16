@@ -4,6 +4,7 @@ import { Mail, Lock } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";
 import Loader from "../components/Loader";
+import { toast } from "react-toastify";
 
 function Login() {
   const { user, isLoading, isSuccess, isError, message } = useSelector(

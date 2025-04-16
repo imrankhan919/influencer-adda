@@ -86,6 +86,21 @@ const updateBooking = async (updateStatus, token) => {
   return response.data
 }
 
+const replyCommentByAdmin = async (formData, token) => {
+
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(`/api/booking/${formData.bid}/comment`, formData, options)
+  console.log(response.data)
+  return response.data
+
+}
+
+
 
 
 const adminService = {
@@ -96,7 +111,8 @@ const adminService = {
   addInfluencer,
   updateInfluencer,
   deleteInfluencer,
-  updateBooking
+  updateBooking,
+  replyCommentByAdmin
 };
 
 export default adminService;

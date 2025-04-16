@@ -17,6 +17,12 @@ const adminSlice = createSlice({
         edit: { influencer: action.payload, isEdit: true },
       };
     },
+    resetEdit: (state, action) => {
+      return {
+        ...state,
+        edit: { influencer: {}, isEdit: false }
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -159,11 +165,27 @@ const adminSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
+      }).addCase(replyTheCommentByAdmin.pending, (state, action) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(replyTheCommentByAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.comments = [...state.comments, action.payload]
+        state.isError = false;
+      })
+      .addCase(replyTheCommentByAdmin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
       })
   },
 });
 
-export const { edit } = adminSlice.actions;
+export const { edit, resetEdit } = adminSlice.actions;
 export default adminSlice.reducer;
 
 // Get Bookings For Admin
@@ -276,4 +298,18 @@ export const updateTheBooking = createAsyncThunk("UPDATE/BOOKING", async (update
     const message = error.response.data.message;
     return thunkAPI.rejectWithValue(message);
   }
+})
+
+
+// Reply Comment
+export const replyTheCommentByAdmin = createAsyncThunk("REPLY/COMMENT_ADMIN", async (formData, thunkAPI) => {
+  let token = thunkAPI.getState().auth.user.token;
+  try {
+    return await adminService.replyCommentByAdmin(formData, token)
+  } catch (error) {
+    const message = error.response.data.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+
+
 })
