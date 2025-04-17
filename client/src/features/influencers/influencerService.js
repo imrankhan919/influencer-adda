@@ -5,6 +5,11 @@ const fetchInfluencers = async () => {
   return response.data;
 };
 
-const influencerService = { fetchInfluencers };
+const fetchInfluencer = async (id) => {
+  const response = await axios.get("/api/influencers/single/" + id);
+  return response.data;
+};
+
+const influencerService = { fetchInfluencers, fetchInfluencer };
 
 export default influencerService;

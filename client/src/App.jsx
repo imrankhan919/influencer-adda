@@ -7,6 +7,9 @@ import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AdminDashboard from "./pages/AdminDashboard";
+import PageNotFound from "./pages/PageNotFound";
+import Profile from "./pages/Profile";
+import Influencer from "./pages/Influencer";
 
 const App = () => {
   return (
@@ -14,8 +17,11 @@ const App = () => {
       <div className="min-h-screen bg-white">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="*" element={<PageNotFound />} />
           <Route path="/auth/admin" element={<AdminDashboard />} />
+          <Route path="/auth/profile" element={<Profile />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/influencer/:id" element={<Influencer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

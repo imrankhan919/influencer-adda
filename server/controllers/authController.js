@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      memberSince: user.createdAt,
       token: generateToken(user._id),
     });
   } else {
@@ -65,6 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      memberSince: user.createdAt,
       token: generateToken(user._id),
     });
   } else {

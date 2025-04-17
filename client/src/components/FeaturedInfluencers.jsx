@@ -3,6 +3,7 @@ import { getInfluencers } from "../features/influencers/influencerSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
+import { Link } from "react-router-dom";
 
 const FeaturedInfluencers = () => {
   const { influencers, isLoading, isError, isSuccess, message } = useSelector(
@@ -32,7 +33,7 @@ const FeaturedInfluencers = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {influencers.map((influencer) => (
             <div
-              key={influencer.id}
+              key={influencer._id}
               className="bg-white rounded-xl shadow-lg overflow-hidden"
             >
               <div className="p-6">
@@ -63,9 +64,11 @@ const FeaturedInfluencers = () => {
                     </p>
                   </div>
                 </div>
-                <button className="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 rounded-lg font-semibold">
-                  View Profile
-                </button>
+                <Link to={`/influencer/${influencer._id}`}>
+                  <button className="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 rounded-lg font-semibold" >
+                    View Profile
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

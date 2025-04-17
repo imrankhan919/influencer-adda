@@ -36,11 +36,11 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                to={user.isAdmin ? "/auth/admin" : "/dashboard"}
+                to={user.isAdmin ? "/auth/admin" : "/auth/profile"}
                 className="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center"
               >
                 <CircleUser size={16} className="ml-2 mx-2" /> Welcome{" "}
-                {user.name}
+                {user?.name}
               </Link>
               <button
                 className="cursor-pointer bg-red-400 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold flex items-center"
