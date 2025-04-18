@@ -65,7 +65,7 @@ const Profile = () => {
                         <div className="relative h-20 w-20 rounded-full overflow-hidden bg-gray-200">
                             <img
                                 src='https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg'
-                                alt={user.name}
+                                alt={user?.name}
                                 className="h-full w-full object-cover"
                             />
                         </div>

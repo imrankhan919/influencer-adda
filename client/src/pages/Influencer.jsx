@@ -1,10 +1,11 @@
-import { Calendar, MapPin, Users, Star, TrendingUp, Clock, Mail, Instagram } from 'lucide-react';
+import { Calendar, MapPin, Users, Star, TrendingUp, Clock, Mail, Instagram, MoreHorizontal } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useParams } from 'react-router-dom';
 import { getInfluencer } from '../features/influencers/influencerSlice';
+import CommentSection from '../components/CommentSection';
 
 const Influencer = () => {
 
@@ -76,51 +77,16 @@ const Influencer = () => {
                                 Request Booking
                             </button>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
             </div>
 
-            {/* Stats Section */}
-            {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <div className="flex items-center gap-4">
-                            <TrendingUp className="h-8 w-8 text-purple-600" />
-                            <div>
-                                <p className="text-sm text-gray-500">Average Views</p>
-                                <p className="text-2xl font-bold text-gray-900">{influencer.stats.avgViews}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <div className="flex items-center gap-4">
-                            <Users className="h-8 w-8 text-purple-600" />
-                            <div>
-                                <p className="text-sm text-gray-500">Engagement Rate</p>
-                                <p className="text-2xl font-bold text-gray-900">{influencer.stats.engagementRate}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <div className="flex items-center gap-4">
-                            <Clock className="h-8 w-8 text-purple-600" />
-                            <div>
-                                <p className="text-sm text-gray-500">Response Time</p>
-                                <p className="text-2xl font-bold text-gray-900">{influencer.stats.responseTime}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <div className="flex items-center gap-4">
-                            <Star className="h-8 w-8 text-purple-600" />
-                            <div>
-                                <p className="text-sm text-gray-500">Rating</p>
-                                <p className="text-2xl font-bold text-gray-900">{influencer.stats.rating}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
+            <CommentSection />
 
 
         </div>

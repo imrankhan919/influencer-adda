@@ -26,9 +26,17 @@ const AdminDashboard = () => {
 
   useEffect(() => {
 
-    if (!user.isAdmin) {
+    if (!user) {
       navigate("/")
     }
+
+    if (user) {
+      if (user.isAdmin === false) {
+        navigate("/login")
+      }
+    }
+
+
     if (isError && message) {
       toast.error(message)
     }
