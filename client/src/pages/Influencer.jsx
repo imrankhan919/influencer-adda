@@ -6,13 +6,21 @@ import Loader from '../components/Loader';
 import { useParams } from 'react-router-dom';
 import { getInfluencer } from '../features/influencers/influencerSlice';
 import CommentSection from '../components/CommentSection';
+import { addBooking } from '../features/bookings/bookingSlice';
 
 const Influencer = () => {
 
     const { influencer, isLoading, isSuccess, isError, message } = useSelector(state => state.influencer)
+    const { bookings, bookingsLoading, bookingSuccess, bookingError, bookingMessage } = useSelector(state => state.booking)
 
     const dispatch = useDispatch()
     const { id } = useParams()
+
+
+    const handleBooking = (id) => {
+        dispatch(addBooking(id))
+    }
+
 
 
     useEffect(() => {
@@ -73,8 +81,10 @@ const Influencer = () => {
                             <p className="text-gray-600 text-lg">Booking Amount : INR {influencer.rate}/event</p>
                             <p className="text-gray-600 text-lg">Bio : Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat dicta ab, illo praesentium in quam nulla aliquid esse voluptatibus ullam magni eveniet impedit dolore quas? Praesentium dicta obcaecati amet voluptatibus!</p>
 
-                            <button className="bg-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition-colors duration-200 shadow-lg">
-                                Request Booking
+
+
+                            <button disabled={!influencer.isActive} onClick={() => handleBooking(influencer._id)} className="bg-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition-colors duration-200 shadow-lg disabled:bg-gray-400">
+                                {influencer.isActive ? "Request Booking" : "Already Booked"}
                             </button>
                         </div>
 
@@ -86,7 +96,11 @@ const Influencer = () => {
                 </div>
             </div>
 
-            <CommentSection />
+            {
+                !influencer.isActive ? (<CommentSection />) : (<>
+                    <h1 className='text-center my-8 text-4xl'>You Need To Book This Influencer First</h1>
+                </>)
+            }
 
 
         </div>

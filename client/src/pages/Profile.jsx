@@ -1,43 +1,23 @@
 import { CalendarDays, Mail, Phone } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
+import { getUsersBookings } from '../features/bookings/bookingSlice';
 
 
 const Profile = () => {
 
     const { user, isLoading, isSuccess, isError, message } = useSelector(state => state.auth)
+    const { bookings, bookingsLoading, bookingSuccess, bookingError, bookingMessage } = useSelector(state => state.booking)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
 
-    const bookings = [
-        {
-            id: 1,
-            service: 'Spa Treatment',
-            date: '2024-03-25',
-            time: '10:00 AM',
-            status: 'upcoming',
-        },
-        {
-            id: 2,
-            service: 'Yoga Class',
-            date: '2024-03-22',
-            time: '2:00 PM',
-            status: 'completed',
-        },
-        {
-            id: 3,
-            service: 'Massage Therapy',
-            date: '2024-03-20',
-            time: '3:30 PM',
-            status: 'completed',
-        },
-    ];
+
 
 
     useEffect(() => {
@@ -45,13 +25,15 @@ const Profile = () => {
             navigate("/login")
         }
 
-        if (isError && message) {
+        dispatch(getUsersBookings())
+
+        if (isError && message || bookingError && bookingMessage) {
             toast.error(message)
         }
-    }, [user, isError, message])
+    }, [user, isError, message, bookingError, bookingMessage])
 
 
-    if (isLoading) {
+    if (isLoading || bookingsLoading) {
         return <Loader />
     }
 
@@ -117,9 +99,9 @@ const Profile = () => {
                             </div>
                             <div className="divide-y divide-gray-200">
                                 {bookings.map((booking) => (
-                                    <a
+                                    <Link
                                         key={booking.id}
-                                        href={`/booking/${booking.id}`}
+                                        to={`/influencer/${booking.influencer._id}`}
                                         className="block p-6 hover:bg-gray-50 transition-colors duration-200"
                                     >
                                         <div className="flex items-center justify-between">
@@ -129,10 +111,10 @@ const Profile = () => {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-lg font-medium text-gray-900">
-                                                        {booking.service}
+                                                        {booking.influencer.name}
                                                     </h3>
                                                     <p className="text-sm text-gray-500">
-                                                        {booking.date} at {booking.time}
+                                                        Booked At : {new Date(booking.createdAt).toLocaleDateString('en-IN')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -148,7 +130,7 @@ const Profile = () => {
                                                 <span className="text-gray-400 hover:text-gray-600">→</span>
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

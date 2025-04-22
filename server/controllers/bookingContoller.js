@@ -4,7 +4,7 @@ const Influencer = require("../models/influencerModel");
 const User = require("../models/userModel");
 
 const getBookings = asyncHandler(async (req, res) => {
-  const myBookings = await Booking.find({ user: req.user._id });
+  const myBookings = await Booking.find({ user: req.user._id }).populate('influencer')
 
   if (!myBookings) {
     res.status(404);
@@ -14,8 +14,8 @@ const getBookings = asyncHandler(async (req, res) => {
   res.status(200).json(myBookings);
 });
 
-const getBooking = async (req, res) => {
-  const myBooking = await Booking.findById(req.params.bid);
+const getBooking = asyncHandler(async (req, res) => {
+  const myBooking = await Booking.findById(req.params.bid).populate('influencer');
 
   if (!myBooking) {
     res.status(404);
@@ -23,7 +23,7 @@ const getBooking = async (req, res) => {
   }
 
   res.status(200).json(myBooking);
-};
+})
 
 const addBooking = asyncHandler(async (req, res) => {
   // Find if influencer exists
@@ -42,11 +42,20 @@ const addBooking = asyncHandler(async (req, res) => {
     throw new Error("Booking Already Exist!");
   }
 
+
+  // Update Influencer
+  await Influencer.findByIdAndUpdate(influencer._id, { isActive: false }, { new: true })
+
+  // Create Booking
   const newBooking = await Booking.create({
     user: req.user._id,
-    influencer: req.params.id,
+    influencer: influencer._id,
     status: "pending",
   });
+
+
+
+
 
   if (!newBooking) {
     res.status(400);
