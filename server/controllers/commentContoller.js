@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Comment = require("../models/commentModel");
 
 const getComments = asyncHandler(async (req, res) => {
-  const comments = await Comment.find({ booking: req.params.bid })
+  const comments = await Comment.find({ booking: req.params.bid }).populate('user')
   if (!comments) {
     res.status(404);
     throw new Error("No Comments Found");

@@ -6,19 +6,23 @@ import Loader from '../components/Loader';
 import { useParams } from 'react-router-dom';
 import { getInfluencer } from '../features/influencers/influencerSlice';
 import CommentSection from '../components/CommentSection';
-import { addBooking } from '../features/bookings/bookingSlice';
+import { addBooking, getUsersBooking } from '../features/bookings/bookingSlice';
 
 const Influencer = () => {
 
     const { influencer, isLoading, isSuccess, isError, message } = useSelector(state => state.influencer)
-    const { bookings, bookingsLoading, bookingSuccess, bookingError, bookingMessage } = useSelector(state => state.booking)
+    const { bookings, booking, bookingsLoading, bookingSuccess, bookingError, bookingMessage } = useSelector(state => state.booking)
 
     const dispatch = useDispatch()
     const { id } = useParams()
 
 
+    const bookingDetail = bookings.filter(booking => booking.influencer._id === id)
+
+
     const handleBooking = (id) => {
         dispatch(addBooking(id))
+
     }
 
 
@@ -27,14 +31,20 @@ const Influencer = () => {
 
         dispatch(getInfluencer(id))
 
-        if (isError && message) {
+        if (bookingDetail.length > 0) {
+            dispatch(getUsersBooking(bookingDetail[0]._id))
+        }
+
+
+
+        if (isError && message || bookingError && bookingMessage) {
             toast.error(message)
         }
 
-    }, [isError, message])
+    }, [isError, message, bookingError, bookingMessage])
 
 
-    if (isLoading) {
+    if (isLoading || bookingsLoading) {
         return <Loader />
     }
 
@@ -80,7 +90,7 @@ const Influencer = () => {
 
                             <p className="text-gray-600 text-lg">Booking Amount : INR {influencer.rate}/event</p>
                             <p className="text-gray-600 text-lg">Bio : Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat dicta ab, illo praesentium in quam nulla aliquid esse voluptatibus ullam magni eveniet impedit dolore quas? Praesentium dicta obcaecati amet voluptatibus!</p>
-
+                            <p className='text-gray-600 text-xl'>Booking Id : {!booking ? "" : booking?._id}</p>
 
 
                             <button disabled={!influencer.isActive} onClick={() => handleBooking(influencer._id)} className="bg-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition-colors duration-200 shadow-lg disabled:bg-gray-400">
@@ -97,8 +107,8 @@ const Influencer = () => {
             </div>
 
             {
-                !influencer.isActive ? (<CommentSection />) : (<>
-                    <h1 className='text-center my-8 text-4xl'>You Need To Book This Influencer First</h1>
+                booking ? (<CommentSection />) : (<>
+                    <h1 className='text-center my-8 text-2xl'>Comments Only Available For Booked Influencers</h1>
                 </>)
             }
 

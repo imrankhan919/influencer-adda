@@ -1,40 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import { Heart, Reply, MoreHorizontal, Send } from 'lucide-react';
+import { addComment, getComments } from '../features/comment/commentSlice';
+import Loader from './Loader';
 
 
 const CommentSection = () => {
-    const [comments, setComments] = useState([
-        {
-            id: 1,
-            username: "Aniket Sharma",
-            avatar: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=60",
-            text: "Amazing performer! I booked him for my corporate event last month, and he was absolutely brilliant. Everyone loved his act!",
-            timestamp: "2 days ago",
-            likes: 24
-        },
-        {
-            id: 2,
-            username: "Priya Malhotra",
-            avatar: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=60",
-            text: "Does he do virtual events? Would love to get a booking for our company's annual day celebration that's happening online.",
-            timestamp: "5 days ago",
-            likes: 17
-        },
-        {
-            id: 3,
-            username: "Rahul Kapoor",
-            avatar: "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=60",
-            text: "Worth every penny! His comedy timing is impeccable and he connected so well with the audience at our wedding reception.",
-            timestamp: "1 week ago",
-            likes: 42
-        }
-    ]);
+
+    const { comments, commentSuccess, commentLoading, commentError, commentMessage } = useSelector(state => state.comment)
+    const { booking } = useSelector(state => state.booking)
+
+    const dispatch = useDispatch()
+
 
     const [newComment, setNewComment] = useState('');
 
 
-    const handleSubmit = () => { }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        dispatch(addComment({
+            id: booking._id,
+            text: newComment
+        }))
+    }
 
+    useEffect(() => {
+
+        dispatch(getComments(booking._id))
+
+        if (commentError && commentMessage) {
+            toast.error(message, { position: "top-center" });
+        }
+    }, [commentError, commentMessage]);
+
+
+    if (commentLoading) {
+        return <Loader />;
+    }
 
 
     return (
@@ -82,8 +84,8 @@ const CommentSection = () => {
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between mb-1">
                                             <div className="flex items-center gap-2">
-                                                <h4 className="font-medium text-gray-900">{comment.username}</h4>
-                                                <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                                                <h4 className="font-medium text-gray-900">{comment.user.name}</h4>
+                                                <span className="text-sm text-gray-500">{comment.createdAt}</span>
                                             </div>
                                             <button className="text-gray-400 hover:text-gray-600 transition-colors">
                                                 <MoreHorizontal size={16} />

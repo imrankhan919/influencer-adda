@@ -5,6 +5,7 @@ const bookingSlice = createSlice({
   name: "booking",
   initialState: {
     bookings: [],
+    booking: null,
     bookingsLoading: false,
     bookingSuccess: false,
     bookingError: false,
@@ -30,6 +31,41 @@ const bookingSlice = createSlice({
         state.bookingError = true
         state.bookingMessage = action.payload
       })
+      .addCase(getUsersBooking.pending, (state, action) => {
+        state.bookingsLoading = true
+        state.bookingSuccess = false
+        state.bookingError = false
+      })
+      .addCase(getUsersBooking.fulfilled, (state, action) => {
+        state.bookingsLoading = false
+        state.booking = action.payload
+        state.bookingSuccess = true
+        state.bookingError = false
+      })
+      .addCase(getUsersBooking.rejected, (state, action) => {
+        state.bookingsLoading = false
+        state.bookingSuccess = false
+        state.bookingError = true
+        state.bookingMessage = action.payload
+      })
+      .addCase(addBooking.pending, (state, action) => {
+        state.bookingsLoading = true
+        state.bookingSuccess = false
+        state.bookingError = false
+      })
+      .addCase(addBooking.fulfilled, (state, action) => {
+        state.bookingsLoading = false
+        state.bookings = [action.payload, ...state.booking]
+        state.booking = action.payload
+        state.bookingSuccess = true
+        state.bookingError = false
+      })
+      .addCase(addBooking.rejected, (state, action) => {
+        state.bookingsLoading = false
+        state.bookingSuccess = false
+        state.bookingError = true
+        state.bookingMessage = action.payload
+      })
   },
 });
 
@@ -44,6 +80,20 @@ export const getUsersBookings = createAsyncThunk("BOOKING/FETCH", async (_, thun
 
   try {
     return await bookingService.fetchUserBookings(token);
+  } catch (error) {
+    const message = error.response.data.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+
+
+})
+
+// Get all users booking
+export const getUsersBooking = createAsyncThunk("BOOKING/FETCH/ID", async (id, thunkAPI) => {
+
+  let token = thunkAPI.getState().auth.user.token;
+  try {
+    return await bookingService.fetchUserBooking(id, token);
   } catch (error) {
     const message = error.response.data.message;
     return thunkAPI.rejectWithValue(message);

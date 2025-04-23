@@ -100,7 +100,7 @@ const Profile = () => {
                             <div className="divide-y divide-gray-200">
                                 {bookings.map((booking) => (
                                     <Link
-                                        key={booking.id}
+                                        key={booking._id}
                                         to={`/influencer/${booking.influencer._id}`}
                                         className="block p-6 hover:bg-gray-50 transition-colors duration-200"
                                     >
