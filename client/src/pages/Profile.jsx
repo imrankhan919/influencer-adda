@@ -101,7 +101,7 @@ const Profile = () => {
                                 {bookings.map((booking) => (
                                     <Link
                                         key={booking._id}
-                                        to={`/influencer/${booking.influencer._id}`}
+                                        to={`/auth/influencer/${booking.influencer._id}`}
                                         className="block p-6 hover:bg-gray-50 transition-colors duration-200"
                                     >
                                         <div className="flex items-center justify-between">

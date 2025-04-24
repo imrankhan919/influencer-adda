@@ -64,7 +64,7 @@ const FeaturedInfluencers = () => {
                     </p>
                   </div>
                 </div>
-                <Link to={`/influencer/${influencer._id}`}>
+                <Link to={`auth/influencer/${influencer._id}`}>
                   <button className="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 rounded-lg font-semibold" >
                     View Profile
                   </button>

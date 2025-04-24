@@ -101,6 +101,16 @@ const updateBooking = asyncHandler(async (req, res) => {
     { new: true }
   ).populate('user').populate('influencer')
 
+  if (req.body.status === "rejected") {
+    // Update Influencer Status
+    await Influencer.findByIdAndUpdate(updatedBooking.influencer._id, { isActive: true })
+  }
+
+
+
+
+
+
   if (!updatedBooking) {
     res.status(400);
     throw new Error("Booking Not Updated");

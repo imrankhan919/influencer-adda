@@ -22,7 +22,6 @@ const Influencer = () => {
 
     const handleBooking = (id) => {
         dispatch(addBooking(id))
-
     }
 
 
@@ -34,7 +33,6 @@ const Influencer = () => {
         if (bookingDetail.length > 0) {
             dispatch(getUsersBooking(bookingDetail[0]._id))
         }
-
 
 
         if (isError && message || bookingError && bookingMessage) {

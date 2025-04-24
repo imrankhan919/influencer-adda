@@ -1,6 +1,6 @@
 import { Sparkles, ArrowRight, LogOut, CircleUser } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logOutUser } from "../features/auth/authSlice";
 
 const Navbar = () => {
@@ -9,10 +9,22 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+  // const location = useLocation()
+
+
+
   const handleLogOut = () => {
     dispatch(logOutUser());
     navigate("/login")
   };
+
+
+  // if (location.pathname.includes('admin')) {
+  //   return (
+  //     <></>
+  //   )
+  // }
+
 
   return (
     <nav className="px-6 py-4 md:px-12 bg-white shadow-sm">

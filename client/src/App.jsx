@@ -10,6 +10,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import PageNotFound from "./pages/PageNotFound";
 import Profile from "./pages/Profile";
 import Influencer from "./pages/Influencer";
+import PrivateComponent from "./components/PrivateComponent";
 
 const App = () => {
   return (
@@ -18,12 +19,14 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="*" element={<PageNotFound />} />
-          <Route path="/auth/admin" element={<AdminDashboard />} />
-          <Route path="/auth/profile" element={<Profile />} />
           <Route path="/" element={<Home />} />
-          <Route path="/influencer/:id" element={<Influencer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/auth" element={<PrivateComponent />}>
+            <Route path="admin" element={<AdminDashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="influencer/:id" element={<Influencer />} />
+          </Route>
         </Routes>
       </div>
       <Footer />

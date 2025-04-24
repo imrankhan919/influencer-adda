@@ -26,9 +26,6 @@ const fetchUserBooking = async (id, token) => {
 
 
 const requestBooking = async (id, token) => {
-
-    console.log(id, token)
-
     const options = {
         headers: {
             authorization: `Bearer ${token}`,
